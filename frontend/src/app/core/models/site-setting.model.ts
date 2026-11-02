@@ -1,0 +1,36 @@
+export interface SiteSetting {
+  id: number;
+  brandName: string;
+  tagline: string;
+  positioning: string;
+  heroHeadline: string;
+  heroHeadlineHi: string;
+  heroDescription: string;
+  heroDescriptionHi: string;
+  category: string;
+  location: string;
+  followerCountDisplay: string;
+  logoPath: string;
+  avatarPath: string;
+  coverImagePath: string;
+  portraitImagePath: string;
+  facebookPageUrl?: string;
+  instagramUrl?: string;
+  youTubeChannelUrl?: string;
+  linkedInUrl?: string;
+  contactEmail?: string;
+  whatsAppNumber?: string;
+  businessNote?: string;
+  aboutTitle: string;
+  aboutExperience: string;
+  aboutMission: string;
+  adSlot1Enabled: boolean;
+  adSlot1ImageUrl?: string;
+  adSlot1TargetUrl?: string;
+  adSlot1AltText?: string;
+  adSlot2Enabled: boolean;
+  adSlot2ImageUrl?: string;
+  adSlot2TargetUrl?: string;
+  adSlot2AltText?: string;
+  updatedAtUtc?: string;
+}

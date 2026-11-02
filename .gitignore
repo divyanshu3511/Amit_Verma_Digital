@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Node and Angular
+node_modules/
+.angular/
+dist/
+.npm/
+*.log
+
+# Exclude Test Project from Git Repository
+AmitVermaDigital.Tests/

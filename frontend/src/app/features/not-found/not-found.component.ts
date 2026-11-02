@@ -1,0 +1,38 @@
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-not-found',
+  standalone: true,
+  imports: [RouterLink],
+  template: `
+    <div class="container py-5 text-center">
+      <div class="glass-card p-5 mx-auto" style="max-width: 580px;">
+        <div class="icon-box yellow mx-auto mb-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1 class="display-6 fw-bold text-white mb-2">404 — Page Not Found</h1>
+        <p class="text-secondary small mb-4">
+          The page or prompt you requested either does not exist, has expired, or is currently unpublished.
+        </p>
+        <div class="d-flex justify-content-center gap-2">
+          <a routerLink="/" class="btn btn-primary-gradient btn-sm">Return Home</a>
+          <a routerLink="/prompts" class="btn btn-glass btn-sm">Explore Prompt Library</a>
+        </div>
+      </div>
+    </div>
+  `,
+  styles: [`
+    :host {
+      display: block;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+    }
+  `]
+})
+export class NotFoundComponent {}

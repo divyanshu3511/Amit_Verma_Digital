@@ -1,0 +1,124 @@
+<div class="container py-5">
+  @if (prompt) {
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/" class="text-secondary text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/prompts" class="text-secondary text-decoration-none">Prompts</a></li>
+        <li class="breadcrumb-item"><a routerLink="/prompts" [queryParams]="{ category: prompt.category }" class="text-secondary text-decoration-none">{{ prompt.category }}</a></li>
+        <li class="breadcrumb-item active text-white" aria-current="page">{{ prompt.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <!-- Main Prompt Column -->
+      <div class="col-lg-8">
+        <div class="glass-card p-4 p-md-5 mb-5">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="badge-pill category">{{ prompt.category }}</span>
+            @if (prompt.isFeatured) {
+              <span class="badge-pill featured">★ Featured Prompt</span>
+            }
+          </div>
+
+          <h1 class="display-6 fw-bold text-white mb-3">{{ prompt.title }}</h1>
+          <p class="text-secondary lead mb-4">{{ prompt.description }}</p>
+
+          <!-- Action Bar -->
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-4 p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25">
+            <button type="button" class="btn btn-primary-gradient btn-sm" (click)="copyPrompt()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>{{ langService.isHindi ? 'प्रॉम्प्ट कॉपी करें' : 'Copy Prompt' }}</span>
+            </button>
+
+            @if (prompt.instructions && prompt.instructions.length > 0) {
+              <button type="button" class="btn btn-glass btn-sm" (click)="copyInstructions()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                <span>{{ langService.isHindi ? 'निर्देश कॉपी करें' : 'Copy Instructions' }}</span>
+              </button>
+
+              <button type="button" class="btn btn-accent btn-sm" (click)="copyBoth()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                <span>{{ langService.isHindi ? 'दोनों कॉपी करें' : 'Copy Both' }}</span>
+              </button>
+            }
+          </div>
+
+          <!-- Complete AI Prompt Body -->
+          <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-info mb-2">{{ langService.isHindi ? 'AI प्रॉम्प्ट टेक्स्ट (ChatGPT, Gemini, Claude के लिए)' : 'Full AI Prompt:' }}</h3>
+            <pre class="prompt-box" style="max-height: 500px;">{{ prompt.promptText }}</pre>
+          </div>
+
+          <!-- Step-by-Step Instructions -->
+          @if (prompt.instructions && prompt.instructions.length > 0) {
+            <div class="mb-4">
+              <h3 class="fs-5 fw-bold text-warning mb-3">{{ langService.isHindi ? 'स्टेप-बाय-स्टेप उपयोग निर्देश' : 'How to Use This Prompt:' }}</h3>
+              <ol class="list-group list-group-numbered bg-transparent border-0">
+                @for (step of prompt.instructions; track step.sortOrder) {
+                  <li class="list-group-item bg-transparent text-secondary border-secondary border-opacity-25 py-3">
+                    <span class="text-white fs-6">{{ step.instructionText }}</span>
+                  </li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (getKeywordsList().length > 0) {
+            <div class="pt-4 border-top border-secondary border-opacity-25">
+              <span class="text-secondary small fw-semibold me-2">Keywords:</span>
+              @for (kw of getKeywordsList(); track kw) {
+                <span class="badge bg-secondary bg-opacity-50 text-white me-1 mb-1">#{{ kw }}</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right Sidebar Column -->
+      <div class="col-lg-4">
+        <!-- Creator Bio Card -->
+        <div class="glass-card p-4 mb-4">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img [src]="settings?.avatarPath || 'images/avatar.png'" alt="Creator Avatar" width="56" height="56" class="rounded-circle border border-primary object-fit-cover" />
+            <div>
+              <h4 class="fs-6 fw-bold text-white mb-0">{{ settings?.brandName || 'Amit Verma Digital 2.0' }}</h4>
+              <span class="text-secondary small">{{ settings?.location || 'Lucknow, India' }}</span>
+            </div>
+          </div>
+          <p class="text-secondary small mb-3">
+            {{ settings?.tagline || 'Helping Creators Grow Faster' }}. Providing actionable video blueprints, algorithmic growth strategies, and ready-to-use AI prompts.
+          </p>
+          <a routerLink="/" fragment="contact" class="btn btn-glass btn-sm w-100 justify-content-center">
+            Collaborate with Amit
+          </a>
+        </div>
+
+        <!-- Related Prompts Card -->
+        @if (relatedPrompts.length > 0) {
+          <div class="glass-card p-4">
+            <h4 class="fs-6 fw-bold text-white mb-3">More in {{ prompt.category }}</h4>
+            <div class="d-flex flex-column gap-3">
+              @for (rel of relatedPrompts; track rel.id) {
+                <div class="border-bottom border-secondary border-opacity-25 pb-2">
+                  <a [routerLink]="['/prompts', rel.slug]" class="text-white fw-semibold small text-decoration-none hover-primary d-block mb-1">
+                    {{ rel.title }}
+                  </a>
+                  <span class="text-secondary small font-monospace">/{{ rel.slug }}</span>
+                </div>
+              }
+            </div>
+            <a routerLink="/prompts" [queryParams]="{ category: prompt.category }" class="text-info small fw-semibold d-block mt-3 text-decoration-none">
+              View all in {{ prompt.category }} &rarr;
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (isLoading) {
+    <div class="glass-card p-5 text-center my-5">
+      <div class="spinner-border text-info mb-3" role="status"></div>
+      <p class="text-secondary">Loading prompt details...</p>
+    </div>
+  }
+</div>

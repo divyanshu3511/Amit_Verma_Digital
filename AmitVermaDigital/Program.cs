@@ -86,14 +86,15 @@ else
 
 app.UseStatusCodePagesWithReExecute("/Error/Status", "?code={0}");
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Route mappings
+// Route mappings (prepared for both API controllers and retained controllers)
+app.MapControllers();
+
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

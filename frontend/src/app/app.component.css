@@ -1,0 +1,9 @@
+.site-main {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main.admin-host {
+  min-height: 100vh;
+}
