@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AmitVermaDigital.Tests/AmitVermaDigital.Tests.csproj" />
+  <Project Path="AmitVermaDigital/AmitVermaDigital.csproj" />
+</Solution>

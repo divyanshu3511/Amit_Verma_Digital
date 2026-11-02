@@ -1,0 +1,132 @@
+@model AmitVermaDigital.Models.Entities.Prompt
+@{
+    var hasInstructions = Model.Instructions != null && Model.Instructions.Any();
+    var modalId = $"promptModal_{Model.Id}";
+}
+
+<div class="glass-card p-4 d-flex flex-column h-100 position-relative">
+    <!-- Header Badges -->
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+        <span class="badge-pill category">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            @Model.Category
+        </span>
+
+        @if (Model.IsFeatured)
+        {
+            <span class="badge-pill featured">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Featured
+            </span>
+        }
+    </div>
+
+    <!-- Title & Description -->
+    <h3 class="fs-5 fw-bold text-white mb-2">
+        <a href="/Prompts/Details/@Model.Slug" class="text-white text-decoration-none hover-primary">@Model.Title</a>
+    </h3>
+
+    <p class="text-secondary small flex-grow-1 mb-3 line-clamp-2">
+        @Model.Description
+    </p>
+
+    <!-- Instructions Count indicator -->
+    @if (hasInstructions && Model.Instructions != null)
+    {
+        <div class="d-flex align-items-center gap-1 text-muted small mb-3">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>@Model.Instructions.Count Step-by-Step Instructions</span>
+        </div>
+    }
+
+    <!-- Hidden Raw Content for Copying -->
+    <div id="prompt-text-@Model.Id" class="d-none">@Model.PromptText</div>
+    @if (hasInstructions && Model.Instructions != null)
+    {
+        <div id="instructions-text-@Model.Id" class="d-none">
+@foreach (var step in Model.Instructions.OrderBy(i => i.SortOrder))
+{
+@($"{step.SortOrder}. {step.InstructionText}\n")
+}
+        </div>
+    }
+
+    <!-- Card Action Buttons -->
+    <div class="d-flex flex-wrap align-items-center gap-2 pt-2 border-top border-secondary border-opacity-25 mt-auto">
+        <button type="button" class="btn btn-primary-gradient btn-sm flex-fill" onclick="copyPromptText(@Model.Id)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Prompt</span>
+        </button>
+
+        <button type="button" class="btn btn-glass btn-sm" data-bs-toggle="modal" data-bs-target="#@modalId" title="View details and instructions">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>View</span>
+        </button>
+    </div>
+</div>
+
+<!-- Modal for full prompt & instructions -->
+<div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="@(modalId)_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-white border border-secondary">
+            <div class="modal-header border-secondary">
+                <div>
+                    <span class="badge-pill category mb-1">@Model.Category</span>
+                    <h4 class="modal-title fs-5 fw-bold" id="@(modalId)_label">@Model.Title</h4>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-secondary small mb-3">@Model.Description</p>
+
+                <!-- Prompt Text Block -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="fw-semibold fs-6 text-info">Full AI Prompt:</span>
+                        <button type="button" class="btn btn-sm btn-glass py-1 px-2" onclick="copyPromptText(@Model.Id)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy Prompt
+                        </button>
+                    </div>
+                    <pre class="prompt-box">@Model.PromptText</pre>
+                </div>
+
+                <!-- Instructions Block -->
+                @if (hasInstructions && Model.Instructions != null)
+                {
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="fw-semibold fs-6 text-warning">Step-by-Step Instructions:</span>
+                            <button type="button" class="btn btn-sm btn-glass py-1 px-2" onclick="copyInstructionsText(@Model.Id)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                Copy Instructions
+                            </button>
+                        </div>
+                        <ol class="list-group list-group-numbered bg-transparent border-0">
+                            @foreach (var step in Model.Instructions.OrderBy(i => i.SortOrder))
+                            {
+                                <li class="list-group-item bg-transparent text-secondary border-secondary border-opacity-25 py-2">
+                                    <span class="text-white">@step.InstructionText</span>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer border-secondary d-flex justify-content-between">
+                <a href="/Prompts/Details/@Model.Slug" class="btn btn-glass btn-sm">Full Page View</a>
+                <div class="d-flex gap-2">
+                    @if (hasInstructions)
+                    {
+                        <button type="button" class="btn btn-accent btn-sm" onclick="copyBothText(@Model.Id)">
+                            Copy Both (Prompt + Steps)
+                        </button>
+                    }
+                    <button type="button" class="btn btn-primary-gradient btn-sm" onclick="copyPromptText(@Model.Id)">
+                        Copy Prompt
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

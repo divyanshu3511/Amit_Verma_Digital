@@ -1,0 +1,137 @@
+@model AmitVermaDigital.Models.ViewModels.PromptLibraryViewModel
+@{
+    bool isHi = Model.CurrentLang == "hi";
+    ViewData["Title"] = isHi ? "AI प्रॉम्प्ट लाइब्रेरी" : "AI Prompt Library for Creators";
+    ViewData["MetaDescription"] = "Discover, filter, and copy ready-to-use AI prompts for Facebook Reels scripts, page growth, monetization, and hooks by Amit Verma Digital 2.0.";
+}
+
+<div class="container py-5">
+    <!-- Header & Intro -->
+    <div class="row align-items-center justify-content-between mb-5">
+        <div class="col-lg-8">
+            <div class="section-kicker">@(isHi ? "क्रिएटर रिसोर्स सेंटर" : "Creator Prompt Vault")</div>
+            <h1 class="display-5 fw-bold text-white mb-2">
+                @(isHi ? "AI प्रॉम्प्ट लाइब्रेरी" : "AI Prompt Library")
+            </h1>
+            <p class="text-secondary lead mb-0">
+                @(isHi ? "वायरल फेसबुक रील्स, पेज ग्रोथ, और मोनेटाइजेशन के लिए तैयार AI प्रॉम्प्ट्स — सीधे कॉपी करें और कंटेंट बनाएं।" : "Tested and high-converting prompts for Reels scripts, viral hooks, captions, and Facebook monetization.")
+            </p>
+        </div>
+
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <!-- Language Toggle Pill -->
+            <button class="btn btn-glass lang-switcher-btn" data-lang="@(isHi ? "en" : "hi")">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                <span>@(isHi ? "Switch to English UI" : "हिन्दी भाषा में देखें")</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search & Filter Controls Card -->
+    <div class="glass-card p-4 mb-4">
+        <form method="get" action="/Prompts" class="row g-3 align-items-center">
+            <input type="hidden" name="lang" value="@Model.CurrentLang" />
+
+            <!-- Search input -->
+            <div class="col-lg-6 col-md-12">
+                <div class="position-relative">
+                    <input type="text" name="search" value="@Model.SearchTerm" 
+                           class="form-control admin-input ps-5 py-2" 
+                           placeholder="@(isHi ? "शीर्षक, श्रेणी, या कीवर्ड से खोजें..." : "Search prompts by topic, keywords, niche...")" />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Sort By Select -->
+            <div class="col-lg-4 col-md-6">
+                <select name="sort" class="form-select admin-select py-2" onchange="this.form.submit()">
+                    <option value="newest" selected="@(Model.SortBy == "newest")">@(isHi ? "सबसे नए पहले (Newest First)" : "Newest First")</option>
+                    <option value="featured" selected="@(Model.SortBy == "featured")">@(isHi ? "फीचर्ड पहले (Featured First)" : "Featured First")</option>
+                    <option value="oldest" selected="@(Model.SortBy == "oldest")">@(isHi ? "पुराने पहले (Oldest First)" : "Oldest First")</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-lg-2 col-md-6 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-gradient w-100 justify-content-center py-2">
+                    @(isHi ? "खोजें" : "Filter")
+                </button>
+                @if (!string.IsNullOrWhiteSpace(Model.SearchTerm) || !string.IsNullOrWhiteSpace(Model.SelectedCategory))
+                {
+                    <a href="/Prompts?lang=@Model.CurrentLang" class="btn btn-glass py-2" title="@(isHi ? "फ़िल्टर रीसेट करें" : "Reset Filters")">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </a>
+                }
+            </div>
+        </form>
+
+        <!-- Category Filter Pills -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <span class="text-secondary small fw-semibold me-2">@(isHi ? "श्रेणी:" : "Category:")</span>
+
+            <a href="/Prompts?category=All&search=@Model.SearchTerm&sort=@Model.SortBy&lang=@Model.CurrentLang" 
+               class="badge-pill @(string.IsNullOrEmpty(Model.SelectedCategory) || Model.SelectedCategory == "All" ? "verified" : "") text-decoration-none">
+                @(isHi ? "सभी (All)" : "All Categories")
+            </a>
+
+            @foreach (var cat in Model.Categories)
+            {
+                <a href="/Prompts?category=@Uri.EscapeDataString(cat)&search=@Model.SearchTerm&sort=@Model.SortBy&lang=@Model.CurrentLang" 
+                   class="badge-pill @(Model.SelectedCategory == cat ? "verified" : "category") text-decoration-none">
+                    @cat
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Active Filter Summary -->
+    <div class="d-flex align-items-center justify-content-between mb-4 text-secondary small">
+        <div>
+            @(isHi ? "प्रदर्शित परिणाम:" : "Showing:") <strong class="text-white">@Model.Prompts.Count</strong> @(isHi ? "प्रॉम्प्ट्स" : "prompts available")
+            @if (!string.IsNullOrWhiteSpace(Model.SelectedCategory) && Model.SelectedCategory != "All")
+            {
+                <span>in <strong class="text-info">@Model.SelectedCategory</strong></span>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+            {
+                <span>matching <strong class="text-warning">"@Model.SearchTerm"</strong></span>
+            }
+        </div>
+    </div>
+
+    <!-- Prompts Grid -->
+    @if (Model.Prompts != null && Model.Prompts.Any())
+    {
+        <div class="row g-4">
+            @foreach (var prompt in Model.Prompts)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <partial name="_PromptCard" model="prompt" />
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="glass-card p-5 text-center my-4">
+            <div class="icon-box yellow mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+            <h3 class="fs-4 fw-bold text-white mb-2">@(isHi ? "कोई प्रॉम्प्ट नहीं मिला" : "No Prompts Match Your Filter")</h3>
+            <p class="text-secondary small mx-auto mb-4" style="max-width: 480px;">
+                @(isHi ? "आपके खोजे गए कीवर्ड या श्रेणी से कोई प्रॉम्प्ट मेल नहीं खाता। कृपया दूसरा कीवर्ड आज़माएँ या फ़िल्टर हटाएँ।" : "We couldn't find any live prompts matching your search criteria. Try a different keyword or reset filters to explore all available prompts.")
+            </p>
+            <a href="/Prompts?lang=@Model.CurrentLang" class="btn btn-primary-gradient btn-sm">
+                @(isHi ? "सभी प्रॉम्प्ट्स दिखाएं" : "View All Prompts")
+            </a>
+        </div>
+    }
+</div>

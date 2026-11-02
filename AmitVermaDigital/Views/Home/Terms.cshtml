@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Terms of Service";
+    var settings = ViewBag.Settings as AmitVermaDigital.Models.Entities.SiteSetting;
+    var brand = settings?.BrandName ?? "Amit Verma Digital 2.0";
+    var email = settings?.ContactEmail ?? "amitvermadigital2.0@gmail.com";
+}
+
+<div class="container py-5" style="max-width: 860px;">
+    <div class="glass-card p-4 p-md-5">
+        <div class="section-kicker">Terms & Conditions</div>
+        <h1 class="display-6 fw-bold text-white mb-4">Terms of Service</h1>
+
+        <div class="alert alert-info border-info border-opacity-25 bg-dark bg-opacity-50 small mb-4">
+            <strong>Notice to Site Owner:</strong> These terms cover the educational content, AI prompts, and consulting resources provided on @brand. Review with legal counsel for jurisdiction-specific adjustments.
+        </div>
+
+        <div class="text-secondary d-flex flex-column gap-3">
+            <p>Last updated: October 2026</p>
+
+            <h2 class="fs-4 fw-bold text-white mt-3">1. Acceptance of Terms</h2>
+            <p>
+                By accessing and utilizing the @brand website and AI prompt library, you agree to comply with and be bound by these terms. If you do not agree with any part of these terms, please do not use our site.
+            </p>
+
+            <h2 class="fs-4 fw-bold text-white mt-3">2. Educational & Informational Purpose</h2>
+            <p>
+                All materials, guides, Facebook Reels strategies, monetization breakdowns, and AI prompt templates provided on this website are for educational and informational purposes only. Results on social media platforms vary based on individual effort, algorithm shifts, audience niche, and content quality. No specific income, view count, or monetization guarantee is implied or warranted.
+            </p>
+
+            <h2 class="fs-4 fw-bold text-white mt-3">3. Intellectual Property and Use of Prompts</h2>
+            <p>
+                Visitors are encouraged to copy, customize, and utilize the provided AI prompts for their personal and commercial video creation workflows. However, mass automated scraping, republishing the website database as a competing directory, or unlawful distribution without attribution is prohibited.
+            </p>
+
+            <h2 class="fs-4 fw-bold text-white mt-3">4. Limitation of Liability</h2>
+            <p>
+                @brand and its creators are not liable for any direct, indirect, incidental, or consequential damages resulting from platform policy changes, account restrictions imposed by Meta/Facebook, or third-party AI provider outputs.
+            </p>
+
+            <h2 class="fs-4 fw-bold text-white mt-3">5. Governing Law & Inquiries</h2>
+            <p>
+                These terms shall be governed by the laws of India, with jurisdiction in Lucknow, Uttar Pradesh. Inquiries may be directed to <a href="mailto:@email" class="text-info">@email</a>.
+            </p>
+        </div>
+    </div>
+</div>

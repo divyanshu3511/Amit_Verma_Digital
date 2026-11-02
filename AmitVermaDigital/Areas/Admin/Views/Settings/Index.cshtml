@@ -1,0 +1,247 @@
+@model AmitVermaDigital.Models.ViewModels.SiteSettingViewModel
+@{
+    ViewData["Title"] = "Site Settings & Ads";
+}
+
+<div class="glass-card p-4 p-md-5 mb-5" style="max-width: 960px;">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fs-4 fw-bold text-white mb-1">Website Settings & Brand Identity</h2>
+            <p class="text-secondary small mb-0">Configure branding, social links, contact info, images, and optional ad slots.</p>
+        </div>
+        <a href="/" target="_blank" class="btn btn-glass btn-sm">Preview Website &rarr;</a>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger small p-3 mb-4" role="alert">
+            <div asp-validation-summary="All" class="mb-0"></div>
+        </div>
+    }
+
+    <form asp-area="Admin" asp-controller="Settings" asp-action="Index" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <!-- 1. Brand Identity -->
+        <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-white pb-2 mb-3 border-bottom border-secondary border-opacity-25">1. Brand & Header Identity</h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="BrandName" class="form-label text-white small fw-semibold">Brand Name *</label>
+                    <input asp-for="BrandName" class="form-control admin-input" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Category" class="form-label text-white small fw-semibold">Category Badge *</label>
+                    <input asp-for="Category" class="form-control admin-input" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Tagline" class="form-label text-white small fw-semibold">Tagline *</label>
+                    <input asp-for="Tagline" class="form-control admin-input" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Positioning" class="form-label text-white small fw-semibold">Positioning Subtitle</label>
+                    <input asp-for="Positioning" class="form-control admin-input" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FollowerCountDisplay" class="form-label text-white small fw-semibold">Follower Count Display *</label>
+                    <input asp-for="FollowerCountDisplay" class="form-control admin-input" placeholder="39K" required />
+                    <span class="text-secondary small">Easily updated as your audience grows.</span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Location" class="form-label text-white small fw-semibold">Location *</label>
+                    <input asp-for="Location" class="form-control admin-input" required />
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Hero Headlines & Content -->
+        <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-white pb-2 mb-3 border-bottom border-secondary border-opacity-25">2. Hero Section Headlines (Bilingual)</h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="HeroHeadline" class="form-label text-white small fw-semibold">Hero Heading (English) *</label>
+                    <textarea asp-for="HeroHeadline" class="form-control admin-textarea" rows="2" required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="HeroHeadlineHi" class="form-label text-white small fw-semibold">Hero Heading (Hindi) *</label>
+                    <textarea asp-for="HeroHeadlineHi" class="form-control admin-textarea" rows="2"></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="HeroDescription" class="form-label text-white small fw-semibold">Hero Subtitle / Description (English) *</label>
+                    <textarea asp-for="HeroDescription" class="form-control admin-textarea" rows="3" required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="HeroDescriptionHi" class="form-label text-white small fw-semibold">Hero Subtitle / Description (Hindi) *</label>
+                    <textarea asp-for="HeroDescriptionHi" class="form-control admin-textarea" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Images Management -->
+        <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-white pb-2 mb-3 border-bottom border-secondary border-opacity-25">3. Creator Visual Assets</h3>
+            <div class="row g-4">
+                <!-- Avatar / Logo -->
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                        <label class="form-label text-white small fw-semibold mb-2">Profile Avatar / Logo</label>
+                        <div class="mb-2 text-center">
+                            <img src="@Model.AvatarPath" alt="Avatar" width="70" height="70" class="rounded-circle border border-primary object-fit-cover" />
+                        </div>
+                        <input asp-for="AvatarPath" class="form-control admin-input mb-2 small" placeholder="/images/avatar.png" />
+                        <label class="form-label text-secondary small mb-1">Upload New Avatar:</label>
+                        <input asp-for="NewAvatarFile" type="file" class="form-control admin-input small" accept="image/*" />
+                    </div>
+                </div>
+
+                <!-- Cover Image -->
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                        <label class="form-label text-white small fw-semibold mb-2">Hero Cover Banner</label>
+                        <div class="mb-2 text-center rounded overflow-hidden" style="max-height: 70px;">
+                            <img src="@Model.CoverImagePath" alt="Cover" class="img-fluid object-fit-cover" style="max-height: 70px;" />
+                        </div>
+                        <input asp-for="CoverImagePath" class="form-control admin-input mb-2 small" placeholder="/images/cover.jpg" />
+                        <label class="form-label text-secondary small mb-1">Upload New Banner:</label>
+                        <input asp-for="NewCoverFile" type="file" class="form-control admin-input small" accept="image/*" />
+                    </div>
+                </div>
+
+                <!-- Portrait Image -->
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                        <label class="form-label text-white small fw-semibold mb-2">Creator Portrait Photo</label>
+                        <div class="mb-2 text-center">
+                            <img src="@Model.PortraitImagePath" alt="Portrait" width="70" height="70" class="rounded-3 border border-secondary object-fit-cover" />
+                        </div>
+                        <input asp-for="PortraitImagePath" class="form-control admin-input mb-2 small" placeholder="/images/portrait.jpg" />
+                        <label class="form-label text-secondary small mb-1">Upload New Portrait:</label>
+                        <input asp-for="NewPortraitFile" type="file" class="form-control admin-input small" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Social Links & Contact -->
+        <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-white pb-2 mb-3 border-bottom border-secondary border-opacity-25">4. Social Channels & Direct Contact</h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="FacebookPageUrl" class="form-label text-white small fw-semibold">Facebook Page URL</label>
+                    <input asp-for="FacebookPageUrl" type="url" class="form-control admin-input" placeholder="https://facebook.com/yourpage" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="InstagramUrl" class="form-label text-white small fw-semibold">Instagram URL</label>
+                    <input asp-for="InstagramUrl" type="url" class="form-control admin-input" placeholder="https://instagram.com/yourprofile" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="YouTubeChannelUrl" class="form-label text-white small fw-semibold">YouTube Channel URL</label>
+                    <input asp-for="YouTubeChannelUrl" type="url" class="form-control admin-input" placeholder="https://youtube.com/@@yourchannel" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="LinkedInUrl" class="form-label text-white small fw-semibold">LinkedIn Profile URL</label>
+                    <input asp-for="LinkedInUrl" type="url" class="form-control admin-input" placeholder="https://linkedin.com/in/yourprofile" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ContactEmail" class="form-label text-white small fw-semibold">Contact Email *</label>
+                    <input asp-for="ContactEmail" type="email" class="form-control admin-input" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="WhatsAppNumber" class="form-label text-white small fw-semibold">WhatsApp Number (Optional)</label>
+                    <input asp-for="WhatsAppNumber" class="form-control admin-input" placeholder="+91 9876543210" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="BusinessNote" class="form-label text-white small fw-semibold">Public Business Collaboration Note</label>
+                    <textarea asp-for="BusinessNote" class="form-control admin-textarea" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Optional Advertisement Slots -->
+        <div class="mb-5">
+            <h3 class="fs-5 fw-bold text-white pb-2 mb-3 border-bottom border-secondary border-opacity-25">5. Optional Advertisement / Sponsor Slots (Disabled by default)</h3>
+            <p class="text-secondary small mb-4">
+                Configure up to two promotional banner slots. Ad slots remain hidden unless explicitly enabled with valid image and destination URLs.
+            </p>
+
+            <div class="row g-4">
+                <!-- Ad Slot 1 -->
+                <div class="col-lg-6">
+                    <div class="p-4 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                        <div class="form-check form-switch mb-3">
+                            <input asp-for="AdSlot1Enabled" class="form-check-input" type="checkbox" id="adSlot1Switch" />
+                            <label class="form-check-label text-white fw-bold" for="adSlot1Switch">
+                                Enable Ad Slot 1 (Homepage Top)
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdSlot1ImageUrl" class="form-label text-white small">Banner Image URL</label>
+                            <input asp-for="AdSlot1ImageUrl" type="url" class="form-control admin-input" placeholder="https://example.com/banner.png" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdSlot1TargetUrl" class="form-label text-white small">Destination Link URL</label>
+                            <input asp-for="AdSlot1TargetUrl" type="url" class="form-control admin-input" placeholder="https://partner.com?ref=amit" />
+                        </div>
+
+                        <div>
+                            <label asp-for="AdSlot1AltText" class="form-label text-white small">Alt Text</label>
+                            <input asp-for="AdSlot1AltText" class="form-control admin-input" placeholder="Featured Partner" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Slot 2 -->
+                <div class="col-lg-6">
+                    <div class="p-4 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                        <div class="form-check form-switch mb-3">
+                            <input asp-for="AdSlot2Enabled" class="form-check-input" type="checkbox" id="adSlot2Switch" />
+                            <label class="form-check-label text-white fw-bold" for="adSlot2Switch">
+                                Enable Ad Slot 2 (Prompts Footer)
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdSlot2ImageUrl" class="form-label text-white small">Banner Image URL</label>
+                            <input asp-for="AdSlot2ImageUrl" type="url" class="form-control admin-input" placeholder="https://example.com/banner2.png" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AdSlot2TargetUrl" class="form-label text-white small">Destination Link URL</label>
+                            <input asp-for="AdSlot2TargetUrl" type="url" class="form-control admin-input" placeholder="https://sponsor.com" />
+                        </div>
+
+                        <div>
+                            <label asp-for="AdSlot2AltText" class="form-label text-white small">Alt Text</label>
+                            <input asp-for="AdSlot2AltText" class="form-control admin-input" placeholder="Sponsored Resource" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-3 border-top border-secondary border-opacity-25 d-flex gap-3">
+            <button type="submit" class="btn btn-primary-gradient px-4 py-2">
+                <span>Save All Settings</span>
+            </button>
+            <a href="/Admin" class="btn btn-glass px-4 py-2">Cancel</a>
+        </div>
+    </form>
+</div>

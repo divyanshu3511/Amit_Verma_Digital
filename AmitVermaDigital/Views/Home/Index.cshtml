@@ -1,0 +1,536 @@
+@model AmitVermaDigital.Models.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Helping Creators Grow Faster";
+    var settings = Model.Settings;
+    var currentLang = Context.Request.Query["lang"].ToString();
+    if (string.IsNullOrEmpty(currentLang))
+    {
+        Context.Request.Cookies.TryGetValue("Preferred_Lang", out currentLang);
+    }
+    bool isHi = currentLang == "hi";
+}
+
+<!-- Hero Section -->
+<section class="position-relative overflow-hidden pt-5 pb-5">
+    <div class="hero-glow"></div>
+    <div class="container position-relative" style="z-index: 1;">
+        <div class="row align-items-center g-5 pt-3 pb-4">
+            <!-- Left Hero Content -->
+            <div class="col-lg-7 text-center text-lg-start">
+                <!-- Badges -->
+                <div class="d-inline-flex flex-wrap align-items-center gap-2 mb-4 justify-content-center justify-content-lg-start">
+                    <span class="badge-pill verified">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        @(isHi ? "वेरिफाइड डिजिटल क्रिएटर" : "Verified Digital Creator")
+                    </span>
+                    <span class="badge-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        @settings.Location
+                    </span>
+                    <span class="badge-pill featured">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        @settings.FollowerCountDisplay Followers
+                    </span>
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="display-4 fw-bolder lh-sm mb-3">
+                    @if (isHi && !string.IsNullOrWhiteSpace(settings.HeroHeadlineHi))
+                    {
+                        @settings.HeroHeadlineHi
+                    }
+                    else
+                    {
+                        <span>Grow Your Content.</span><br />
+                        <span class="text-gradient">Expand Your Reach.</span>
+                    }
+                </h1>
+
+                <!-- Subtitle / Description -->
+                <p class="lead text-secondary mb-4 mx-auto mx-lg-0" style="max-width: 580px;">
+                    @(isHi && !string.IsNullOrWhiteSpace(settings.HeroDescriptionHi) ? settings.HeroDescriptionHi : settings.HeroDescription)
+                </p>
+
+                <!-- CTA Action Buttons -->
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
+                    <a href="/Prompts" class="btn btn-primary-gradient btn-lg">
+                        <span>@(isHi ? "AI प्रॉम्प्ट्स एक्सप्लोर करें" : "Explore Prompt Library")</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+
+                    @if (!string.IsNullOrWhiteSpace(settings.FacebookPageUrl))
+                    {
+                        <a href="@settings.FacebookPageUrl" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>
+                            <span>@(isHi ? "फेसबुक पर जुड़ें" : "Follow on Facebook")</span>
+                        </a>
+                    }
+
+                    <a href="#contact" class="btn btn-glass btn-lg">
+                        <span>@(isHi ? "संपर्क करें" : "Get in Touch")</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Hero Imagery -->
+            <div class="col-lg-5">
+                <div class="position-relative mx-auto" style="max-width: 460px;">
+                    <!-- Outer Glowing Card Frame -->
+                    <div class="glass-card p-3 shadow-lg overflow-hidden position-relative border-highlight">
+                        <!-- Cover Banner Header -->
+                        <div class="rounded-3 overflow-hidden position-relative mb-3" style="aspect-ratio: 16/7;">
+                            <img src="@settings.CoverImagePath" alt="Amit Verma Cover" class="w-100 h-100 object-fit-cover" />
+                            <div class="position-absolute inset-0 bg-dark bg-opacity-25"></div>
+                        </div>
+
+                        <!-- Portrait & Bio Row -->
+                        <div class="row align-items-center g-3 px-2 pb-2">
+                            <div class="col-auto">
+                                <div class="position-relative">
+                                    <img src="@settings.PortraitImagePath" alt="Amit Verma Portrait" 
+                                         width="90" height="90" 
+                                         class="rounded-circle border border-3 border-primary object-fit-cover shadow" />
+                                    <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-dark rounded-circle p-2" title="Online & Active"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3 class="fs-5 fw-bold mb-1 text-white">@settings.BrandName</h3>
+                                <div class="d-flex align-items-center gap-1 text-warning small fw-semibold">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <span>@settings.Positioning</span>
+                                </div>
+                                <div class="text-secondary small mt-1">@settings.Location</div>
+                            </div>
+                        </div>
+
+                        <!-- Highlight Stat Callout -->
+                        <div class="glass-card p-3 mt-3 d-flex align-items-center justify-content-between border-secondary border-opacity-25">
+                            <div>
+                                <div class="text-secondary small">Facebook Reach</div>
+                                <div class="fs-4 fw-bolder text-white">@settings.FollowerCountDisplay+ <span class="fs-6 text-info fw-normal">Followers</span></div>
+                            </div>
+                            <div class="text-end">
+                                <div class="text-secondary small">Monetization</div>
+                                <div class="fs-4 fw-bolder text-success">$106.83+ <span class="fs-6 text-muted fw-normal">Payouts</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Optional Ad Slot 1 -->
+<partial name="_AdSlot" model="@((settings.AdSlot1Enabled, settings.AdSlot1ImageUrl, settings.AdSlot1TargetUrl, settings.AdSlot1AltText))" />
+
+<!-- About / Creator Story Section -->
+<section id="about" class="py-5 border-top border-secondary border-opacity-25">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 text-center">
+                <div class="position-relative d-inline-block">
+                    <img src="@settings.PortraitImagePath" alt="Amit Verma" class="rounded-4 img-fluid shadow-lg border border-secondary" style="max-height: 480px; object-fit: cover;" />
+                    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-n3 w-100 px-4">
+                        <div class="glass-card p-3 shadow text-start">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-primary">Lucknow, UP</span>
+                                <span class="badge bg-success">Digital Creator</span>
+                            </div>
+                            <p class="small text-white mb-0 fw-semibold">Helping creators grow and monetize organically.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="section-kicker">@(isHi ? "क्रिएटर के बारे में" : "About the Creator")</div>
+                <h2 class="display-6 fw-bold mb-4">
+                    @(isHi ? "कंटेंट ग्रोथ और मोनेटाइजेशन के विश्वसनीय मेंटॉर" : settings.AboutTitle)
+                </h2>
+                <p class="text-secondary mb-4 leading-relaxed">
+                    @settings.AboutExperience
+                </p>
+                <p class="text-secondary mb-4 leading-relaxed">
+                    @settings.AboutMission
+                </p>
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="glass-card p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-box blue mb-0">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="fs-6 fw-bold text-white mb-0">39,000+ Community</h4>
+                                    <span class="text-secondary small">Active creators learning daily</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="glass-card p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-box yellow mb-0">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                </div>
+                                <div>
+                                    <h4 class="fs-6 fw-bold text-white mb-0">Criteria Unlock System</h4>
+                                    <span class="text-secondary small">In-Stream ads & Reels bonus</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Expertise Topics / Services Grid Section -->
+<section id="topics" class="py-5 border-top border-secondary border-opacity-25">
+    <div class="container py-4">
+        <div class="text-center max-w-2xl mx-auto mb-5">
+            <div class="section-kicker">@(isHi ? "कंटेंट मास्टरी टॉपिक्स" : "Core Growth Topics")</div>
+            <h2 class="display-6 fw-bold mb-3">@(isHi ? "फेसबुक पर ग्रो करने के 8 मजबूत स्तंभ" : "Proven Blueprints for Creator Success")</h2>
+            <p class="text-secondary mx-auto" style="max-width: 600px;">
+                @(isHi ? "फेसबुक रील्स से लेकर पेज रीच, मोनेटाइजेशन और AI प्रॉम्प्ट्स तक — हर वो चीज़ जो आपके कंटेंट को वायरल बनाती है।" : "From viral Reels engineering to page recommendations, monetization criteria, and AI-assisted workflows.")
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Facebook Reels Tips -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Facebook Reels Tips</h3>
+                    <p class="text-secondary small flex-grow-1">Learn 3-second hook formulas, trending audio hacks, and retention structures that make Facebook's algorithm push your Reels.</p>
+                    <a href="/Prompts?category=Facebook%20Reels" class="text-info small fw-semibold text-decoration-none mt-2">Explore Reels Prompts &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 2. Facebook Page Growth -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box yellow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Facebook Page Growth</h3>
+                    <p class="text-secondary small flex-grow-1">Step-by-step strategies to unlock 'Recommended' status, eliminate policy violations, and turn random viewers into loyal followers.</p>
+                    <a href="/Prompts?category=Facebook%20Page%20Growth" class="text-info small fw-semibold text-decoration-none mt-2">Page Growth Guides &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 3. Content Creation -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box pink">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Content Creation</h3>
+                    <p class="text-secondary small flex-grow-1">Batching techniques, storytelling templates, and high-retention formats that save hours while maintaining top production quality.</p>
+                    <a href="/Prompts" class="text-info small fw-semibold text-decoration-none mt-2">Content Prompts &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 4. Monetization Education -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Monetization Education</h3>
+                    <p class="text-secondary small flex-grow-1">Demystifying in-stream ads, performance bonuses, Stars monetization, and payout setups with real earning proofs.</p>
+                    <a href="/Prompts?category=Monetization%20Education" class="text-info small fw-semibold text-decoration-none mt-2">Monetization Prompts &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 5. Hashtag Strategy -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box yellow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Hashtag Strategy</h3>
+                    <p class="text-secondary small flex-grow-1">Laser-targeted hashtags tailored for regional and pan-India reach without getting shadowbanned by keyword spamming.</p>
+                    <a href="/Prompts?category=Hashtag%20Strategy" class="text-info small fw-semibold text-decoration-none mt-2">Hashtag Engines &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 6. Engagement Improvement -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box pink">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Engagement Improvement</h3>
+                    <p class="text-secondary small flex-grow-1">Pinned comment questions, debate-sparking polls, and audience conversation triggers that signal high interest to Meta algorithms.</p>
+                    <a href="/Prompts?category=Engagement%20Improvement" class="text-info small fw-semibold text-decoration-none mt-2">Engagement Blueprints &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 7. Video Creation Tips -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">Video Creation Tips</h3>
+                    <p class="text-secondary small flex-grow-1">Affordable mobile microphone setups, ring lighting setups, quick CapCut/Premiere workflows, and crystal-clear audio.</p>
+                    <a href="#videos" class="text-info small fw-semibold text-decoration-none mt-2">Watch Tutorials &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 8. AI Prompts for Creators -->
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="icon-box yellow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3 class="fs-5 fw-bold text-white mb-2">AI Prompts for Creators</h3>
+                    <p class="text-secondary small flex-grow-1">Ready-to-use prompts for ChatGPT, Gemini, and Claude that generate viral video scripts, hooks, and captions in 10 seconds.</p>
+                    <a href="/Prompts" class="text-info small fw-semibold text-decoration-none mt-2">Open Prompt Library &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Prompts Section -->
+<section class="py-5 border-top border-secondary border-opacity-25">
+    <div class="container py-4">
+        <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-5">
+            <div>
+                <div class="section-kicker">@(isHi ? "प्रॉम्प्ट लाइब्रेरी पूर्वावलोकन" : "Prompt Library Preview")</div>
+                <h2 class="display-6 fw-bold mb-0">@(isHi ? "तैयार AI प्रॉम्प्ट्स — बस कॉपी करें और बनाएं" : "Ready-to-Use AI Prompts")</h2>
+            </div>
+            <a href="/Prompts" class="btn btn-glass btn-sm">
+                <span>@(isHi ? "सभी प्रॉम्प्ट्स देखें" : "View All Prompts")</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        @if (Model.FeaturedPrompts != null && Model.FeaturedPrompts.Any())
+        {
+            <div class="row g-4">
+                @foreach (var prompt in Model.FeaturedPrompts)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <partial name="_PromptCard" model="prompt" />
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="glass-card p-5 text-center">
+                <p class="text-secondary mb-3">No featured prompts are currently available.</p>
+                <a href="/Prompts" class="btn btn-primary-gradient btn-sm">Browse Complete Prompt Library</a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Featured Videos Section -->
+<section id="videos" class="py-5 border-top border-secondary border-opacity-25 bg-dark bg-opacity-25">
+    <div class="container py-4">
+        <div class="section-kicker">@(isHi ? "वीडियो ट्यूटोरियल" : "Featured Video Tutorials")</div>
+        <h2 class="display-6 fw-bold mb-4">@(isHi ? "अमित वर्मा के साथ सीखें प्रैक्टिकल ट्रिक्स" : "Watch & Learn Step-by-Step")</h2>
+
+        <div class="row g-4">
+            @if (Model.FeaturedVideos != null && Model.FeaturedVideos.Any())
+            {
+                foreach (var video in Model.FeaturedVideos)
+                {
+                    var ytid = video.GetYouTubeVideoId();
+                    <div class="col-lg-6">
+                        <div class="glass-card overflow-hidden h-100">
+                            <div class="ratio ratio-16x9 bg-black">
+                                @if (!string.IsNullOrEmpty(ytid))
+                                {
+                                    <iframe src="https://www.youtube-nocookie.com/embed/@ytid" 
+                                            title="@video.Title" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen loading="lazy"></iframe>
+                                }
+                                else
+                                {
+                                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-4">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-info mb-2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                                        <span class="text-white fw-semibold">Video preview link coming soon</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="p-4">
+                                <h3 class="fs-5 fw-bold text-white mb-2">@video.Title</h3>
+                                @if (!string.IsNullOrWhiteSpace(video.Description))
+                                {
+                                    <p class="text-secondary small mb-0">@video.Description</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="glass-card p-5 text-center">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-info mb-3"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        <h4 class="text-white fs-5 fw-bold">Video lessons are being updated</h4>
+                        <p class="text-secondary small mb-0">Check back soon or follow Amit on Facebook to catch live Reels and masterclasses.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Social Media Community Section -->
+<section class="py-5 border-top border-secondary border-opacity-25">
+    <div class="container py-4 text-center">
+        <div class="section-kicker justify-content-center">@(isHi ? "सोशल मीडिया कम्युनिटी" : "Join the Community")</div>
+        <h2 class="display-6 fw-bold mb-3">@(isHi ? "39,000+ क्रिएटर्स के साथ जुड़ें" : "Follow Amit Verma on Social Media")</h2>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 540px;">
+            Daily Facebook growth insights, viral algorithm changes, and monetization updates shared across platforms.
+        </p>
+
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            @if (!string.IsNullOrWhiteSpace(settings.FacebookPageUrl))
+            {
+                <a href="@settings.FacebookPageUrl" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-primary me-2"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07"/></svg>
+                    <span>Facebook (39K+)</span>
+                </a>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(settings.InstagramUrl))
+            {
+                <a href="@settings.InstagramUrl" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-danger me-2"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>
+                    <span>Instagram</span>
+                </a>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(settings.YouTubeChannelUrl))
+            {
+                <a href="@settings.YouTubeChannelUrl" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-danger me-2"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81M9.55 15.57V8.43L15.82 12z"/></svg>
+                    <span>YouTube</span>
+                </a>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(settings.LinkedInUrl))
+            {
+                <a href="@settings.LinkedInUrl" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-info me-2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13M7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Business Contact & Form Section -->
+<section id="contact" class="py-5 border-top border-secondary border-opacity-25">
+    <div class="container py-4">
+        <div class="glass-card p-4 p-md-5 border-secondary">
+            <div class="row g-5 align-items-center">
+                <!-- Contact Info Column -->
+                <div class="col-lg-5">
+                    <div class="section-kicker">@(isHi ? "संपर्क करें" : "Direct Inquiries")</div>
+                    <h2 class="display-6 fw-bold mb-3">@(isHi ? "क्रिएटर कोलैबरेशन और कंसल्टिंग" : "Let's Collaborate & Scale")</h2>
+                    <p class="text-secondary mb-4">
+                        @(string.IsNullOrEmpty(settings.BusinessNote) ? "Have a question about Facebook page criteria, Reels strategy, or want to sponsor a video? Reach out directly." : settings.BusinessNote)
+                    </p>
+
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box blue mb-0">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </div>
+                            <div>
+                                <span class="text-secondary small d-block">Official Email</span>
+                                <a href="mailto:@(string.IsNullOrEmpty(settings.ContactEmail) ? "amitvermadigital2.0@gmail.com" : settings.ContactEmail)" class="text-white fw-semibold">
+                                    @(string.IsNullOrEmpty(settings.ContactEmail) ? "amitvermadigital2.0@gmail.com" : settings.ContactEmail)
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="icon-box yellow mb-0">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <span class="text-secondary small d-block">Location</span>
+                                <span class="text-white fw-semibold">@settings.Location</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Working Contact Form Column -->
+                <div class="col-lg-7">
+                    <form id="publicContactForm" asp-controller="Contact" asp-action="Submit" method="post" class="needs-validation">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Honeypot anti-spam field (hidden from view) -->
+                        <div style="display:none !important;" aria-hidden="true">
+                            <label for="Website">Leave this field blank</label>
+                            <input type="text" id="Website" name="Website" tabindex="-1" autocomplete="off" />
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="Name" class="form-label text-white small fw-semibold">Your Name *</label>
+                                <input type="text" id="Name" name="Name" class="form-control admin-input" placeholder="e.g. Rahul Sharma" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Email" class="form-label text-white small fw-semibold">Email Address *</label>
+                                <input type="email" id="Email" name="Email" class="form-control admin-input" placeholder="name@example.com" required />
+                            </div>
+
+                            <div class="col-12">
+                                <label for="Subject" class="form-label text-white small fw-semibold">Subject</label>
+                                <input type="text" id="Subject" name="Subject" class="form-control admin-input" placeholder="Facebook Page Audit, Collab, Prompt question..." />
+                            </div>
+
+                            <div class="col-12">
+                                <label for="Message" class="form-label text-white small fw-semibold">Your Message *</label>
+                                <textarea id="Message" name="Message" rows="4" class="form-control admin-textarea" placeholder="How can Amit Verma help your content growth?" required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary-gradient w-100 py-3 justify-content-center">
+                                    <span>Send Message</span>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- AJAX Response Alerts -->
+                        <div id="contactFormAlert" class="alert d-none mt-3" role="alert"></div>
+
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success mt-3" role="alert">
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger mt-3" role="alert">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

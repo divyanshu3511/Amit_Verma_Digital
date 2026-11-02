@@ -1,0 +1,198 @@
+/* Admin Stylesheet */
+:root {
+    --admin-sidebar-width: 260px;
+    --admin-bg: #090D16;
+    --admin-card: #0F172A;
+    --admin-sidebar: #06090F;
+    --admin-border: rgba(255, 255, 255, 0.08);
+}
+
+body.admin-body {
+    background-color: var(--admin-bg);
+    color: #F1F5F9;
+    font-family: 'Manrope', system-ui, sans-serif;
+    min-height: 100vh;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: var(--admin-sidebar-width);
+    background-color: var(--admin-sidebar);
+    border-right: 1px solid var(--admin-border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.admin-content {
+    flex: 1;
+    margin-left: var(--admin-sidebar-width);
+    padding: 2rem;
+    background-color: var(--admin-bg);
+    min-height: 100vh;
+}
+
+.admin-sidebar-header {
+    padding: 1.5rem 1.25rem;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-nav {
+    list-style: none;
+    padding: 1rem 0.75rem;
+    margin: 0;
+    flex: 1;
+}
+
+.admin-nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #94A3B8;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.admin-nav-link:hover, .admin-nav-link.active {
+    color: #FFFFFF;
+    background: rgba(15, 76, 255, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.admin-nav-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Sora', sans-serif;
+    color: #FFFFFF;
+    margin-top: 0.25rem;
+}
+
+.stat-card .stat-label {
+    font-size: 0.85rem;
+    color: #94A3B8;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+/* Admin Table */
+.admin-table {
+    width: 100%;
+    color: #E2E8F0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-table th {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 1rem 1.25rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #94A3B8;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-table td {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Form Controls */
+.admin-input, .admin-select, .admin-textarea {
+    background: #05080E;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #F8FAFC;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1rem;
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+    border-color: #38BDF8;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    background: #080C14;
+}
+
+/* Instruction Step Reorder Items */
+.instruction-step-item {
+    background: #05080E;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 0.65rem;
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.instruction-step-handle {
+    cursor: grab;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 992px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+    .admin-sidebar.open {
+        transform: translateX(0);
+    }
+    .admin-content {
+        margin-left: 0;
+        padding: 1.25rem;
+    }
+}

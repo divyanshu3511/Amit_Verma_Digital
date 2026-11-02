@@ -1,0 +1,58 @@
+@model AmitVermaDigital.Models.Entities.ContactMessage
+@inject AmitVermaDigital.Services.ITimezoneService TimezoneService
+@{
+    ViewData["Title"] = $"Inquiry from {Model.Name}";
+}
+
+<div class="glass-card p-4 p-md-5 mb-5 mx-auto" style="max-width: 780px;">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fs-4 fw-bold text-white mb-1">Inquiry Details</h2>
+            <span class="text-secondary small">Received on @TimezoneService.FormatIst(Model.CreatedAtUtc, "dd MMMM yyyy at hh:mm tt")</span>
+        </div>
+        <a href="/Admin/Messages" class="btn btn-glass btn-sm">&larr; Back to Inquiries</a>
+    </div>
+
+    <div class="p-4 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-4">
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <span class="text-secondary small d-block">Sender Name:</span>
+                <span class="text-white fw-bold">@Model.Name</span>
+            </div>
+            <div class="col-sm-6">
+                <span class="text-secondary small d-block">Email Address:</span>
+                <a href="mailto:@Model.Email" class="text-info fw-semibold text-decoration-none">@Model.Email</a>
+            </div>
+            <div class="col-sm-6">
+                <span class="text-secondary small d-block">Subject:</span>
+                <span class="text-white">@(string.IsNullOrEmpty(Model.Subject) ? "(None)" : Model.Subject)</span>
+            </div>
+            <div class="col-sm-6">
+                <span class="text-secondary small d-block">IP Address:</span>
+                <span class="text-secondary font-monospace small">@(Model.IpAddress ?? "N/A")</span>
+            </div>
+        </div>
+
+        <hr class="border-secondary border-opacity-25 my-3" />
+
+        <div class="mb-2">
+            <span class="text-secondary small d-block mb-1">Message Content:</span>
+            <div class="p-3 rounded-2 bg-dark text-white border border-secondary border-opacity-25" style="white-space: pre-wrap; line-height: 1.6;">@Model.Message</div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <a href="mailto:@Model.Email?subject=Re:%20@(Uri.EscapeDataString(Model.Subject ?? "Inquiry to Amit Verma"))" class="btn btn-primary-gradient btn-sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Reply via Email</span>
+        </a>
+
+        <form asp-area="Admin" asp-controller="Messages" asp-action="Delete" method="post" onsubmit="return confirm('Delete this message permanently?');">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-glass btn-sm text-danger border-danger border-opacity-25">
+                Delete Message
+            </button>
+        </form>
+    </div>
+</div>

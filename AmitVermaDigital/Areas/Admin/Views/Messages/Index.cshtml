@@ -1,0 +1,75 @@
+@model List<AmitVermaDigital.Models.Entities.ContactMessage>
+@inject AmitVermaDigital.Services.ITimezoneService TimezoneService
+@{
+    ViewData["Title"] = "Contact Inquiries";
+}
+
+<div class="glass-card p-4 p-md-5 mb-5" style="max-width: 960px;">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fs-4 fw-bold text-white mb-1">Contact Messages & Collab Inquiries</h2>
+            <p class="text-secondary small mb-0">Review inquiries submitted through the public website contact form.</p>
+        </div>
+        <span class="badge-pill">Total: @Model.Count messages</span>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Sender Name</th>
+                        <th>Email</th>
+                        <th>Subject / Preview</th>
+                        <th>Received (IST)</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var msg in Model)
+                    {
+                        <tr class="@(msg.IsRead ? "" : "fw-bold")">
+                            <td>
+                                @if (!msg.IsRead)
+                                {
+                                    <span class="badge bg-danger">New</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Read</span>
+                                }
+                            </td>
+                            <td class="text-white">@msg.Name</td>
+                            <td><a href="mailto:@msg.Email" class="text-info text-decoration-none">@msg.Email</a></td>
+                            <td>
+                                <div class="text-white text-truncate" style="max-width: 250px;">@(string.IsNullOrEmpty(msg.Subject) ? "No Subject" : msg.Subject)</div>
+                                <div class="text-secondary small text-truncate" style="max-width: 250px;">@msg.Message</div>
+                            </td>
+                            <td class="text-secondary small">
+                                @TimezoneService.FormatIst(msg.CreatedAtUtc, "dd MMM yyyy, hh:mm tt")
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-1">
+                                    <a href="/Admin/Messages/Details/@msg.Id" class="btn btn-glass btn-sm p-1 px-2">View</a>
+                                    <form asp-area="Admin" asp-controller="Messages" asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Delete message?');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@msg.Id" />
+                                        <button type="submit" class="btn btn-glass btn-sm text-danger border-danger border-opacity-25 p-1 px-2">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="p-5 text-center text-secondary">
+            No contact messages received yet.
+        </div>
+    }
+</div>

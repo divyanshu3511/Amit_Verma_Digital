@@ -1,0 +1,81 @@
+@inject AmitVermaDigital.Services.ISiteSettingService SettingService
+@{
+    var settings = await SettingService.GetSettingsAsync();
+    var currentLang = Context.Request.Query["lang"].ToString();
+    if (string.IsNullOrEmpty(currentLang))
+    {
+        Context.Request.Cookies.TryGetValue("Preferred_Lang", out currentLang);
+    }
+    if (currentLang != "hi") currentLang = "en";
+    bool isHi = currentLang == "hi";
+}
+
+<header class="sticky-top navbar-custom py-2">
+    <div class="container d-flex align-items-center justify-content-between">
+        <!-- Brand Logo & Title -->
+        <a href="/" class="d-flex align-items-center gap-2 text-decoration-none text-white">
+            <img src="@(string.IsNullOrEmpty(settings.AvatarPath) ? "/images/avatar.png" : settings.AvatarPath)" 
+                 alt="@settings.BrandName" 
+                 width="40" height="40" 
+                 class="rounded-circle border border-2 border-primary shadow-sm object-fit-cover" />
+            <div class="lh-sm">
+                <span class="fw-bold fs-5 d-block">Amit Verma <span class="text-gradient">Digital 2.0</span></span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="d-none d-lg-flex align-items-center gap-1" aria-label="Main Navigation">
+            <a href="/" class="nav-link-custom">@(isHi ? "होम" : "Home")</a>
+            <a href="/#about" class="nav-link-custom">@(isHi ? "परिचय" : "About")</a>
+            <a href="/#topics" class="nav-link-custom">@(isHi ? "गाइड्स" : "Topics")</a>
+            <a href="/Prompts" class="nav-link-custom">@(isHi ? "प्रॉम्प्ट लाइब्रेरी" : "Prompt Library")</a>
+            <a href="/#videos" class="nav-link-custom">@(isHi ? "वीडियो" : "Videos")</a>
+            <a href="/#contact" class="nav-link-custom">@(isHi ? "संपर्क" : "Contact")</a>
+        </nav>
+
+        <!-- Right Action Buttons -->
+        <div class="d-none d-lg-flex align-items-center gap-2">
+            <!-- Language Switcher -->
+            <button class="btn btn-glass btn-sm lang-switcher-btn" data-lang="@(isHi ? "en" : "hi")" title="@(isHi ? "Switch to English" : "हिन्दी में बदलें")">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                <span>@(isHi ? "English" : "हिन्दी")</span>
+            </button>
+
+            <!-- Explore Prompts Button -->
+            <a href="/Prompts" class="btn btn-primary-gradient btn-sm">
+                <span>@(isHi ? "प्रॉम्प्ट्स देखें" : "Explore Prompts")</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button class="btn btn-glass btn-sm d-lg-none" id="mobileMenuBtn" type="button" aria-expanded="false" aria-label="Toggle navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </div>
+
+    <!-- Mobile Drawer / Dropdown Menu -->
+    <div class="d-none d-lg-none border-top border-secondary mt-2 pt-2 px-3 pb-3 bg-dark" id="mobileNav">
+        <div class="d-flex flex-column gap-2">
+            <a href="/" class="nav-link-custom py-2">@(isHi ? "होम" : "Home")</a>
+            <a href="/#about" class="nav-link-custom py-2">@(isHi ? "परिचय" : "About")</a>
+            <a href="/#topics" class="nav-link-custom py-2">@(isHi ? "गाइड्स" : "Topics")</a>
+            <a href="/Prompts" class="nav-link-custom py-2">@(isHi ? "प्रॉम्प्ट लाइब्रेरी" : "Prompt Library")</a>
+            <a href="/#videos" class="nav-link-custom py-2">@(isHi ? "वीडियो" : "Videos")</a>
+            <a href="/#contact" class="nav-link-custom py-2">@(isHi ? "संपर्क" : "Contact")</a>
+            <hr class="border-secondary my-1" />
+            <div class="d-flex align-items-center gap-2 mt-2">
+                <button class="btn btn-glass btn-sm flex-fill lang-switcher-btn" data-lang="@(isHi ? "en" : "hi")">
+                    <span>@(isHi ? "Switch to English" : "हिन्दी में बदलें")</span>
+                </button>
+                <a href="/Prompts" class="btn btn-primary-gradient btn-sm flex-fill text-center">
+                    @(isHi ? "प्रॉम्प्ट्स देखें" : "Explore Prompts")
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
